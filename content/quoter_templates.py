@@ -103,7 +103,7 @@ def page(content,user_id,title,error=None):
     <h3>Password</h3>
     <input type="password" name="password">
     <label class="button cancel" for="signinCheckbox">Cancel</label>
-    <input type="submit" value="Sign in / Sign up">
+    <input type="submit" value="Sign / Sign up">
   </form>
 </div>
 
