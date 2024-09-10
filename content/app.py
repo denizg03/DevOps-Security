@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, make_response, escape, render_template
+from flask import Flask, request, redirect, make_response
 import sqlite3
 import urllib
 import quoter_templates as templates
@@ -32,9 +32,8 @@ def check_authentication():
 # The main page
 @app.route("/")
 def index():
-    quotes = db.execute("SELECT id, text, attribution FROM quotes ORDER BY id").fetchall()
-    error_message = escape(request.args.get('error', ''))  # Zorg ervoor dat escape() goed werkt
-    return render_template("main_page.html", quotes=quotes, user_id=request.user_id, error_message=error_message)
+    quotes = db.execute("select id, text, attribution from quotes order by id").fetchall()
+    return templates.main_page(quotes, request.user_id, request.args.get('error'))
 
 
 # The quote comments page
