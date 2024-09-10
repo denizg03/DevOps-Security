@@ -48,16 +48,8 @@ def get_comments_page(quote_id):
 # Post a new quote
 @app.route("/quotes", methods=["POST"])
 def post_quote():
-    text = request.form['text']
-    attribution = request.form['attribution']
-    
-    # Gebruik parameterbinding om SQL-injectie te voorkomen
     with db:
-        db.execute(
-            "INSERT INTO quotes (text, attribution) VALUES (?, ?)",
-            (text, attribution)
-        )
-        
+        db.execute(f"""insert into quotes(text,attribution) values("{request.form['text']}","{request.form['attribution']}")""")
     return redirect("/#bottom")
 
 
