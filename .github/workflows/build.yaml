@@ -55,6 +55,7 @@ jobs:
           exit-on: vulnerability
   test:
     name: Test
+    needs: [ scan ]
     needs: build
     runs-on: ubuntu-latest
     steps:
