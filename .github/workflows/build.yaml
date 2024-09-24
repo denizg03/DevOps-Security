@@ -56,7 +56,6 @@ jobs:
   test:
     name: Test
     needs: [ scan ]
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
