@@ -50,7 +50,7 @@ jobs:
           ignore-base: false
           ignore-unchanged: false
           write-comment: true
-          github-token: ${{ secrets.TOKEN_GITHUB }} # to be able to write the comment
+          github-token: ${{ secrets.TOKEN_GITHUB }} #to be able to write the comment
           exit-code: false
           exit-on: vulnerability
   test:
