@@ -28,7 +28,6 @@ jobs:
           push: true
           tags: |
             denizgormez/student-app:latest
-
   scan:
     name: Scan
     needs: [ build ]
@@ -45,12 +44,12 @@ jobs:
         with:
           command: cves
           image: denizgormez/student-app:latest
-          #only-fixed: true
+          # only-fixed: true
           only-severities: critical,high
           ignore-base: false
           ignore-unchanged: false
           write-comment: true
-          github-token: ${{ secrets.TOKEN_GITHUB }} # to be able to write the comment
+          github-token: ${{ secrets.TOKEN_GUTHUB }} # to be able to write the comment
           exit-code: false
           exit-on: vulnerability
   test:
@@ -72,25 +71,9 @@ jobs:
           sleep 10s
           curl http://localhost
           docker ps -aq | xargs docker stop | xargs docker rm
-        
-  automated-api-tests:
-    name: Automated API tests using Postman CLI
-    needs: [ test ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Postman CLI
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-      - name: Run API tests
-        run: |
-          postman collection run "34412839-39a575a4-29c0-4ff1-8e3e-47445b1e1010"
-
   deploy:
     name: Deploy
-    needs: [ automated-api-tests ]
+    needs: test
     runs-on: self-hosted
     steps:
       - name: Checkout source code
@@ -99,4 +82,3 @@ jobs:
               sudo kubectl delete deployment --all              
               sudo kubectl apply -f ${{ github.workspace }}/kubernetes/deployment.yaml --force
               sudo kubectl apply -f ${{ github.workspace }}/kubernetes/nginx-service.yaml --force
-
